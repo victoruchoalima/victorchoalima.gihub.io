@@ -1,0 +1,77 @@
+A. INITIAL PAGE LOADING (index.html)
+
+    1. the browser mounts the basic structure of the website: some basic div wrappers, containers and lists (for buttons).
+    2. browser fetches css file with some style definitions and resposive split screen visual definitions
+    3. browser loads main.js as a js module
+
+B. JS INIT (main.js)
+
+    1. the eventlistener DOMContentLoaded runs the (initializeApp) after the HTML is loaded.
+
+    2. initializeApp:  
+        0.0.(setScreen) function is called with values to be displayed whilst nothing is asked from the user. the value is attached to the div #screen
+            [REMEMBER: HERE I AM USING AN APPROACH WITH innerHTML, want to change in the futuro for an approach with a html template and information values passing as two arguments]
+        0.1.the querySelectorAll selects the three predefined in html.index navigation links and holds them in the navLinks constant.
+        0.2.the forEach method adds eventListeners to each of the links.
+
+C. CLICKING ON A MENU LINK 
+    1. when the user clicks on one of those links (like TRABALHOS) the event listener created in B20.2 runs:
+        0.0. event.preventDefault stops the link from refreshing of navigating
+        0.1. link.dataset.category will retrieve the value inside data-category, in this case "trabalhos" and hold it on the category constant.
+        0.2.the code will look for a key inside the siteData object (imported from data.js) a key with the category value. siteData.trabalhos will retrieve an array of objects (these objects are individual works) and hold it to itemsToShow constant.
+        0.3.(displaySubMenu) function (imported from menuManager.js) is called and has two args:
+            a.itemsToShow: the array of project objects
+            b.callbackFunction: an anonymous function defined here that will not run now. it will be passed to (displaySubMenu) function to be called later, when the user clikcs on one of the submenu items that displaySubMenu will create.this callback function purpose is to update the div #screen with the content of the selected submenu item.
+        so what happens here is that the user clicks and this part ot the code calls the display submenu with the itemsToShow array and with this anonymous function.
+
+D. DISPLAYING SUBMENU (menuManager.js)
+    0. the buttonsContainer constant holds a reference to to the div where the submnu buttons will be place #buttons-container.
+
+    1. the displaySubMenu function starts its job:
+        0.0.(clearSubMenu) is called to clean buttonsContainer.innerHTML and ensure any previously displayed submenu not to appear.
+
+        0.1.if the array with items doenst has any terms or is invalid it can return something.
+        
+        0.2.else it proceeds to the bulk of the function: it will iterate over each itemData in the items array. that means it will iterate over each project object in the objects array. for each itemData (project) in items (projects array):
+            a.create a new Element <button>, assign it to the constant menuItemELEMENT.
+            b.add a class .submenu-item to the menuItemELEMENT for styling possibilities
+            c.the button text is set using the name of the project.
+            d.the item id is stored as a data-item-id attribute of the button.
+            e.some initial animation styling is applied
+                [REMEMBER: TO BE WORKED ON STILL]
+            f.SUBMENU CLICK LISTENER:
+                f.0.adds to the button an event listener to click event.
+                f.1. when the button is clicked it will execute the onItemClickCallbackFuntion. this function is passed form main.js and knows how to update something to the #screen div. so the itemData passed here is the specific object for the clicked button (the specific project for example). 
+                    [REMEMBER:this function uses (setScreen) function, so this part will need some reworking to insert template displaying options for the content]
+            g.the created button is added to the documentFragment earlier created (this is a way to add multiple elements to the dom at once)
+        0.3.after the iteration the buttonsContainer.appenChild(fragment) adds all the new submenu buttons to the div #buttons-container in the HTML. and the user can see the projects on the screen.
+    
+E. USER CLICKING SUBMENU ITEM
+
+    1. when the user clicks on a project button (like projeto1) the click event listener attached to it inside menuManager runs.
+    2.the onItemClickCallbackFuntion will be called passing projeto1 object information.
+
+F. UPDATING SCREEN CONTENT (callback in main.js and screen.js)
+    1. the callback function receives the selectedItemData (projeto1 object) as an argument.
+    2. checks if selectedItemData and selectedItemData.content are valid.
+    3. (setScreen(selectedItemData.content)) is called. the selectedItemData.content is a HTML string like "<h1>Projeto Alpha</h1><p>Detalhes fascinantes sobre o Projeto Alpha...</p>".
+    4.the setScreen function executes:
+        0.0.gets the content display area
+        0.1.replaces the innerHTML of the div #screen with the HTML content for "projeto1"
+        0.2. the user now seers the project1 details displayed on the screen
+
+fflow at 07.05.2025/ 18:15
+
+summary:
+
+1. User clicks a main category.
+2. main.js identifies the category and fetches data from data.js.
+3. main.js tells menuManager.js to display submenu items for that data, providing a function to call when a submenu item is clicked.
+4. menuManager.js creates and shows the submenu buttons.
+5. User clicks a submenu button.
+6. menuManager.js calls the function provided by main.js, passing the data of the clicked submenu item.
+7. The function in main.js takes this data and tells screen.js to display its content.
+8. screen.js updates the main content area.
+
+***
+

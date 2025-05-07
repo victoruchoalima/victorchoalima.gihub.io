@@ -1,6 +1,11 @@
-export function setScreen() {
+export function setScreen(htmlContent = "") {
+  console.log("setScreen called with htmlContent:", htmlContent);
   const screen = document.getElementById("screen");
-  screen.innerHTML = "";
+  screen.innerHTML = htmlContent;
+
+  // Optional: Add a fade-in animation for new content
+  // screen.style.opacity = 0;
+  // gsap.fromTo(screen, { opacity: 0 }, { opacity: 1, duration: 0.5 });
 }
 
 /*

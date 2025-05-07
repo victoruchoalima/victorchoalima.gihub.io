@@ -58,3 +58,24 @@ body {
 #menu-list {
   background-color: red;
 }
+
+#buttons-container {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.submenu-item {
+  padding: 10px 15px;
+  background-color: var(--front-buttons);
+  color: var(--back-buttons);
+  border: 1px solid var(--back-screen);
+  cursor: pointer;
+  text-align: left;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out; /* For simple animation */
+}
+
+.submenu-item:hover {
+  background-color: #555; /* Example hover effect */
+}
