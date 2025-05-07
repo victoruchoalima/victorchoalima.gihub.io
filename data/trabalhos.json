@@ -1,0 +1,26 @@
+[
+  {
+    "id": "projeto-alpha",
+    "name": "Projeto Alpha",
+    "templateId": "project-detail-template",
+    "data": {
+      "title": "Projeto Alpha",
+      "description": "Detalhes fascinantes sobre o Projeto Alpha...",
+      "imageUrl": "assets/images/projeto-alpha.png",
+      "imageAlt": "Screenshot of Projeto Alpha",
+      "technologies": ["JavaScript", "HTML5", "CSS3"]
+    }
+  },
+  {
+    "id": "projeto-beta",
+    "name": "Projeto Beta",
+    "templateId": "project-detail-template",
+    "data": {
+      "title": "Projeto Beta",
+      "description": "Uma descrição envolvente do Projeto Beta.",
+      "imageUrl": "assets/images/projeto-beta.jpg",
+      "imageAlt": "Mockup of Projeto Beta",
+      "technologies": ["React", "Node.js", "MongoDB"]
+    }
+  }
+]

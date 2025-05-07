@@ -1,0 +1,11 @@
+[
+  {
+    "id": "sobre-mim",
+    "name": "Sobre Mim",
+    "templateId": "default-content-template",
+    "data": {
+      "title": "Sobre Mim",
+      "text": "Aqui vão as informações sobre você, sua paixão por desenvolvimento, suas habilidades e experiências. Você pode formatar este texto com parágrafos."
+    }
+  }
+]
