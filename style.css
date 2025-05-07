@@ -1,0 +1,60 @@
+:root {
+  --back-buttons: #f1f1f0;
+  --back-screen: #0e0e0f;
+  --front-buttons: var(--back-screen);
+  --front-screen: var(--back-buttons);
+}
+
+body {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@media (orientation: landscape) {
+  #wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #screen {
+    background-color: var(--back-screen);
+    color: var(--front-screen);
+    width: 50%;
+  }
+
+  #buttons {
+    background-color: var(--back-buttons);
+    width: 50%;
+  }
+}
+
+@media (orientation: portrait) {
+  #wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  #screen {
+    background-color: var(--back-screen);
+    height: 50%;
+    color: var(--front-screen);
+  }
+
+  #buttons {
+    background-color: var(--back-buttons);
+    height: 50%;
+  }
+}
+
+#nav-container {
+  display: flex;
+  justify-content: space-between;
+  background-color: blue;
+}
+
+#menu-list {
+  background-color: red;
+}
