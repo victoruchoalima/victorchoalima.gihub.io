@@ -1,3 +1,5 @@
+***
+
 A. INITIAL PAGE LOADING (index.html)
 
     1. the browser mounts the basic structure of the website: some basic div wrappers, containers and lists (for buttons).
@@ -51,17 +53,6 @@ E. USER CLICKING SUBMENU ITEM
     1. when the user clicks on a project button (like projeto1) the click event listener attached to it inside menuManager runs.
     2.the onItemClickCallbackFuntion will be called passing projeto1 object information.
 
-F. UPDATING SCREEN CONTENT (callback in main.js and screen.js)
-    1. the callback function receives the selectedItemData (projeto1 object) as an argument.
-    2. checks if selectedItemData and selectedItemData.content are valid.
-    3. (setScreen(selectedItemData.content)) is called. the selectedItemData.content is a HTML string like "<h1>Projeto Alpha</h1><p>Detalhes fascinantes sobre o Projeto Alpha...</p>".
-    4.the setScreen function executes:
-        0.0.gets the content display area
-        0.1.replaces the innerHTML of the div #screen with the HTML content for "projeto1"
-        0.2. the user now seers the project1 details displayed on the screen
-
-fflow at 07.05.2025/ 18:15
-
 summary:
 
 1. User clicks a main category.
@@ -70,8 +61,7 @@ summary:
 4. menuManager.js creates and shows the submenu buttons.
 5. User clicks a submenu button.
 6. menuManager.js calls the function provided by main.js, passing the data of the clicked submenu item.
-7. The function in main.js takes this data and tells screen.js to display its content.
-8. screen.js updates the main content area.
+
 
 ***
 

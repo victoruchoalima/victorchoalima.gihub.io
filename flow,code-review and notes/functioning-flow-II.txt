@@ -1,0 +1,113 @@
+A. about the asynchronous part:
+    it is importante to have in mind this flux in screen.js when importing the templates from templates.html:
+
+        1. fetch templates.html
+        2.wait for the fetch to complete
+        3.parse the HTML text
+        4.Cache the templates
+    
+    the same applies to trabalhos.json and informacao.json in main,js.
+
+    * about parsing: when a browser or tool parses a code, it reads it line by line and turns it into a structure it can understand and run.
+
+B. about async/await
+
+    Js uses promises to manage async operations. a promise is an object representating the envetual completion (or not) of an async operation and its resulting value. async/await makes async code look and behave a bit more like synchronous code.
+
+        a.async: when we declare a function as async, it automatically means that: 1. the function will implicitly return a Promise 2. we can use the await keyword in it.
+
+        b. await:when we put the await in front of a function call that returns a Promise, it pauses the execution of the async function at that line until the Promise is resolved. it unwraps the value from the resolved promise.
+
+C. initializeApp():
+    1.async keyword, fines the function initializeApp will return a object and that can use await inside it.
+    
+    2.await setScreen: it will pause the execution of the function initializeApp here until the Promise returned by setScreen is resolved [CONTINUES->]
+
+D. setScreen():
+
+    1. async keyword. so setScreen also returns an object.
+
+    2. setScreen receives two arguments; 1. the data object from json to be shown 2.the templateID of the template to be applied to that data. 
+
+    4. clear any previous content
+
+    5. await ensureTemplatesLoaded; will run this function and pause the running here of setScreen until this promise is resolved.
+
+E. ensureTemplatesLoaded();
+
+    0.we have to remember here that the code is caching the templates to not having to reload them from the templates file all the time. 
+        
+    1.also an async function. in the first execution:
+        a.templatesLoaded is false
+        b.the code proceeds to the fetching
+        c.templates.html is fetched, parsed
+        d.each <template> content is put into templatesCache object
+        e.templatesLoaded is set to true
+        f.ensureTemplatesLoaded finishes
+
+        g.execution returns to setScreen!
+
+    2. second execution onwards:
+        a.tamplatesLoaded is true
+        b.the the function returns immediately.
+        c.execution returns to setScreen.
+
+    when the function ends the promise is resolved and the flow continues where it stopped.
+
+D. setScreen (<-)
+    1. now that ensureTemplatesLoaded() is resolved, the templates are inside templatesCache object.
+    2. holds inside the templateContent constant a specific template by getting is ID from the argument and searching inside the templatesCache object.
+    3. templateContent.cloneNode(true); templateContent is the original DocumentFragment stored in cache.cloneNode(true) creates a deep copy of this DocumentFragment. deep copy means it copies the fragment and all the HTML elements (nodes) nested within it. if we directly modify the original templateContent from the cache, next time we use it will be altered.
+    4. using the templateId to search inside the templateRenderers object it holds the specific render function in the renderer const
+    5.calls the renderer function passing: a. data (the raw data from the json). b. contentClone (the cloned structure)
+    6. the selected renderer function will populate the clone with the raw data.
+    7.apprend the contentClone as a child to the screenElement (the element the contains all that will be passed to the screen showing.)
+
+
+  
+
+
+* TEMPLATE HANDLING
+
+    1. some basic ideas about template handling on the code:
+        a.fetch the HTML templates from templates.html only once
+        b.cache the templates in memory so they can be quilcky accessed and reused when setScreen function calls.
+    2. const templatesCache={}; this is a simple js object initialized empty.it acts as a storage for the actual content of the HTML templates
+    
+    3. let templatesLoaded = false; this is a boolean variable initialized to false. its purpose is to let the code know whether the templates.html file has already been successfully feteched and its contents parsed into templatesCache.
+        a.when the application first starts it will be false, so the templates are not in memory yet
+
+        b.after the fetching in ensureTemplatesLoaded occurs and the templates are stored in templatesCache it will set templatesLoaded=true.
+    4. async function ensureTemplatesLoaded(); this is the function responsible for loading and caching the templates in case the havent been already loaded.
+        a.first will check templatesLoaded. if true just returns the value (implicitly returning a resolved Promise because it is an async function)
+        b.if not we go to the bulk of the function:
+            0.0.will use await fetch. the await pauses the execution of this function to wait the file to be fetched or to return with some error (not all erros would make the code jump directly to catch)
+            0.1.response.ok; a fetch returns a response object. the .ok is a boolean property that signals the http status is in the successful range.
+            0.2.response.text() is a method that reads the body of the response and returns it as a string .It’s asynchronous and returns a Promise, we use await. this string will be hold in the htmlText constant.
+            0.3.new DOMParser(); DOMParser is a browser class. so what happens here is: 
+                a. const parser = new DOMParser(); create a new object (an instance) based on the DOMParser class. this will run this class constructor and return a new object with specific methods (like parseFromString()) to be asigned to the parser constant.
+            0.4.parseFromString(); this method takes a string and returns a document object. we pass two parameters: a.the html or xml string to be parsed b. the content type (html,xml,) this will be hold in the doc constant.
+            0.5.querySelectorAll.forEach; what happens here is that for every template element found in doc will be iterated a function with forEach:
+                a. for each template element (templateEl) if the template has an id it will asign to the templatesCache object this template.id as a key and template.content as value. the templates content is a DocumentFragment, a lightweight version of a document that can hold a piece of DOM structure (an inherehnt characteristic of the HTML <template> element)
+            0.6.templatesLoaded; now set to true.
+
+** RENDERING HANDLING
+    0. this is the part where the raw data from jason and empty template structures come together to create the actual HTML content that will be displayed.
+    1.const templateRenderers={...};this object creates an object with keys representing the type of template (templateId) pointing to functions to render that specific template.
+    2. RENDERER FUNCTIONS:
+    each renderer function knows how to take a specific data object and populate a specific template structure(clone).
+        a. ARGUMENTS:
+            0.0. they get two arguments: data: the object containing the content from the json files.
+            0.1. clone:the copied template structure that will be filled.
+        b.FUNCTIONING:
+            0.0.clone.querySelector; they use this to find specific HTML elements within the template.
+            0.1.textContent=data.propertyName; for exemplents like h1, p, span, they set the textContent property.(represents all text inside an element, no tags).img.src=data.imageUrl; for img tags they set the src and alt atributes.
+
+    SUMMARY:
+    1. setScreen gets a templateId and data.
+    2. It ensures templates are loaded (from ensureTemplatesLoaded).
+    3. It clones the appropriate template structure from templatesCache.
+    4. It uses templateId to look up the correct specialized renderer function in templateRenderers.
+    5. It calls this renderer function, passing it the data and the cloned template.
+    6. The renderer function meticulously populates the cloned template with the provided data, using querySelector and setting properties/attributes.
+    7. setScreen then appends this fully populated clone to the main #screen element, making it visible.

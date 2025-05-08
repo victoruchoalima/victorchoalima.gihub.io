@@ -1,6 +1,5 @@
 import { setScreen } from "./screen.js";
 import { displaySubMenu } from "./menuManager.js";
-// No longer importing siteData from data.js, as data will be fetched from JSON files.
 
 // initializeApp is now async
 async function initializeApp() {
@@ -63,15 +62,13 @@ async function initializeApp() {
         });
       } catch (error) {
         console.error("Failed to fetch or process category data:", error);
-        setScreen(
-          // This call now needs to be awaited
-          await setScreen(
-            {
-              title: "Erro ao Carregar Dados",
-              text: `Não foi possível carregar os dados para "${category}". Por favor, tente novamente mais tarde.`,
-            },
-            "default-content-template"
-          )
+        // Correctly await the setScreen call for displaying the error
+        await setScreen(
+          {
+            title: "Erro ao Carregar Dados",
+            text: `Não foi possível carregar os dados para "${category}". Por favor, tente novamente mais tarde.`,
+          },
+          "default-content-template"
         );
       }
     });
