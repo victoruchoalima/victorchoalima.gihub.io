@@ -1,14 +1,104 @@
+/* 1. CSS Custom Properties (variables) */
 :root {
   --back-buttons: #f1f1f0;
   --back-screen: #0e0e0f;
   --front-buttons: var(--back-screen);
   --front-screen: var(--back-buttons);
+  --font-hlight: "IBM Plex Mono";
+  --font-h1: clamp(1.5rem, 2vw, 3rem);
+  --font-h2: clamp(1.3rem, 1.8vw, 2.6rem);
+}
+
+/* 2. Media Queries for Custom Properties */
+@media (orientation: landscape) {
+  :root {
+    --font-h1: clamp(1.3rem, 2vw, 3rem);
+    --font-h2: clamp(1rem, 1.8vw, 2.6rem);
+  }
+}
+
+@media (orientation: portrait) {
+  :root {
+    --font-h1: clamp(1rem, 3vw, 2rem);
+    --font-h2: clamp(0.8rem, 2.8vw, 1.8rem);
+  }
+}
+
+/* 3. Font definitions */
+
+@font-face {
+  font-family: "absans";
+  src: url("./assets/fonts/Absans-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "necto";
+  src: url("./assets/fonts/NectoMono-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 100;
+  src: url("./assets/fonts/ibm-plex-mono-v19-latin-100.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 200;
+  src: url("./assets/fonts/ibm-plex-mono-v19-latin-200.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 300;
+  src: url("./assets/fonts/ibm-plex-mono-v19-latin-300.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 400;
+  src: url("./assets/fonts/ibm-plex-mono-v19-latin-regular.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  src: url("./assets/fonts/ibm-plex-mono-v19-latin-500.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 600;
+  src: url("./assets/fonts/ibm-plex-mono-v19-latin-600.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 700;
+  src: url("./assets/fonts/ibm-plex-mono-v19-latin-700.woff2") format("woff2");
+}
+/*base styles */
+
+html {
+  font-size: 100%;
 }
 
 body {
   margin: 0;
   box-sizing: border-box;
 }
+
+/* layout media queries */
 
 @media (orientation: landscape) {
   #wrapper {
@@ -49,14 +139,50 @@ body {
   }
 }
 
+/* layout styles general */
+
 #nav-container {
   display: flex;
-  justify-content: space-between;
-  background-color: blue;
+  max-width: 100%;
+  overflow: hidden;
+}
+.nav-title-container {
+  font-family: var(--font-hlight);
+  font-weight: 700;
+  font-size: var(--font-h1);
+  flex: 1 1 40%;
+  align-content: center;
+  padding: 20px;
+}
+#menu-container {
+  flex: 1 1 60%;
+  align-content: center;
 }
 
 #menu-list {
-  background-color: red;
+  text-decoration: none;
+  list-style: none;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-left: 0;
+  padding-right: 20px;
+}
+#menu-list a {
+  color: var(--front-buttons);
+  font-family: var(--font-hlight);
+  font-size: var(--font-h2);
+  font-weight: 600;
+  text-decoration: none;
+  list-style: none;
+}
+
+#buttons {
+  display: flex;
+  flex-direction: column; /* interesting for changing layout*/
+}
+#buttons-wrapper {
+  flex: 100%;
 }
 
 #buttons-container {
